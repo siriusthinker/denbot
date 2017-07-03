@@ -4,7 +4,7 @@ declared-services:
     label: conversation
     plan: free
 applications:
-- name: conversation-simple
+- name: kent-space
   command: npm start
   path: .
   memory: 256M
