@@ -1,6 +1,6 @@
 ---
 declared-services:
-  my-conversation-service:
+  Conversation-Kent-Space:
     label: conversation
     plan: free
 applications:
@@ -10,6 +10,6 @@ applications:
   memory: 256M
   instances: 1
   services:
-  - my-conversation-service
+  - Conversation-Kent-Space
   env:
     NPM_CONFIG_PRODUCTION: false
