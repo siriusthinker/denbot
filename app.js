@@ -20,6 +20,9 @@ var express = require('express'); // app server
 var bodyParser = require('body-parser'); // parser for post requests
 var Conversation = require('watson-developer-cloud/conversation/v1'); // watson sdk
 
+// emailer
+var emailer = require('./Emailer');
+
 var app = express();
 
 // Bootstrap application settings
@@ -58,6 +61,18 @@ app.post('/api/message', function(req, res) {
       return res.status(err.code || 500).json(err);
     }
     return res.json(updateMessage(payload, data));
+  });
+});
+
+// Endpoint to be called from the client side
+// when sending email notifications
+app.post('/api/email', function(req, res) {
+
+  var payLoad = JSON.parse(JSON.stringify(req.body));
+  emailer.send({
+    to: process.env.EMAIL_TO,
+    subject: process.env.EMAIL_SUBJECT,
+    text: payLoad.text
   });
 });
 

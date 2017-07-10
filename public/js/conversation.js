@@ -138,6 +138,17 @@ var ConversationPanel = (function() {
       });
       // Move chat to the most recent messages when new messages are added
       scrollToChatBottom();
+
+      // check if output returns no answer for the question
+      // email the bot admin that it detects an unanswered question
+      if (newPayload.output && newPayload.output.text) {
+        var no_answer = /I haven't got that answer, yet/;
+        if (no_answer.test(newPayload.output.text[0])) {
+          Api.sendEmailNotifications({
+            text: newPayload.input.text
+          });
+        }
+      }
     }
   }
 
