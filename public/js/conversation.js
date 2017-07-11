@@ -17,6 +17,10 @@ var ConversationPanel = (function() {
     }
   };
 
+  // custom variables
+  var topic = '';
+  var unanswered = '';
+
   // Publicly accessible methods defined
   return {
     init: init,
@@ -118,6 +122,35 @@ var ConversationPanel = (function() {
     var textExists = (newPayload.input && newPayload.input.text)
       || (newPayload.output && newPayload.output.text);
     if (isUser !== null && textExists) {
+
+      // added regex filter
+      if(newPayload.input && newPayload.output) {
+        var str = newPayload.input.text || '';
+
+        // regex for the multiple questions
+        if((str.match(/.*?([a-z_]*\?+[a-z_]*).*?/g) || []).length > 1) {
+          topic = 'multiple';
+          unanswered = str;
+          newPayload.output.text[0] = 'I have no immediate answer for that. Please enter you email address and a human will answer.';
+        }
+
+        // regex for the email
+        if((str.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/) || []).length == 1 && topic == 'multiple') {
+
+          // send the email and the questions
+          Api.sendEmailNotifications({
+            text: 'From: ' + str + ' <br>UnAnswered Questions: ' + unanswered
+          });
+
+          // alter the output and echo back the email
+          newPayload.output.text[0] = 'Got it! ' + str;
+
+          // reset values
+          topic = '';
+          unanswered = '';
+        }
+      }
+
       // Create new message DOM element
       var messageDivs = buildMessageDomElements(newPayload, isUser);
       var chatBoxElement = document.querySelector(settings.selectors.chatBox);
