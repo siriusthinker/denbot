@@ -1,15 +1,15 @@
 ---
 declared-services:
-  Conversation-Kent-Space:
+  GDPR Chatbot:
     label: conversation
     plan: free
 applications:
-- name: kent-space
+- name: denbot
   command: npm start
   path: .
   memory: 256M
   instances: 1
   services:
-  - Conversation-Kent-Space
+  - GDPR Chatbot
   env:
     NPM_CONFIG_PRODUCTION: false

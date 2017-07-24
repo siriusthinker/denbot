@@ -20,7 +20,7 @@ class Emailer {
 
         // setup email data with unicode symbols
         let mailOptions = {
-            from: '"Kent Space ChatBot" <' + process.env.EMAIL_USER + '>', // sender address
+            from: '"' + process.env.BOT_NAME + '" <' + process.env.EMAIL_USER + '>', // sender address
             to: data.to, // list of receivers
             subject: data.subject, // Subject line
             text:  data.text,// plain text body
